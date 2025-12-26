@@ -21,7 +21,7 @@ html {
 
 body {
   min-height: 100%;
-  overflow: auto;
+  overflow: hidden;
   margin: 0;
   font-family: Manrope, ui-sans-serif, system-ui, Segoe UI, Apple SD Gothic Neo, Noto Sans KR, sans-serif;
   font-weight: 500;

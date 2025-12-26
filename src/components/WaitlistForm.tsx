@@ -4,7 +4,7 @@ import { Magnetic } from './Magnetic'
 import clsx from 'clsx'
 import { useI18n } from '../i18n/i18n'
 
-type Status = 'idle' | 'submitting' | 'success' | 'error'
+type Status = 'idle' | 'submitting' | 'success' | 'error' | 'invalid' | 'already'
 
 const formspreeId = import.meta.env.VITE_FORMSPREE_ID as string | undefined
 const directEndpoint = import.meta.env.VITE_WAITLIST_ENDPOINT as string | undefined
@@ -12,11 +12,11 @@ const directEndpoint = import.meta.env.VITE_WAITLIST_ENDPOINT as string | undefi
 function resolveEndpoint() {
   if (directEndpoint) return directEndpoint
   if (formspreeId) return `https://formspree.io/f/${formspreeId}`
-  return null
+  return '/api/waitlist'
 }
 
 function isEmail(value: string) {
-  return /\S+@\S+\.\S+/.test(value)
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
 }
 
 export function WaitlistForm({
@@ -33,40 +33,57 @@ export function WaitlistForm({
   const { t, lang } = useI18n()
   const [email, setEmail] = useState('')
   const [status, setStatus] = useState<Status>('idle')
+  const [message, setMessage] = useState<string>('')
 
   const endpoint = useMemo(() => resolveEndpoint(), [])
-  const disabled = status === 'submitting' || status === 'success' || !endpoint
+  const disabled = status === 'submitting' || !endpoint
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
     if (!endpoint) return
-    if (!isEmail(email)) {
-      setStatus('error')
+    const normalized = email.trim().toLowerCase()
+    if (!isEmail(normalized)) {
+      setStatus('invalid')
+      setMessage('Invalid email')
       return
     }
 
     setStatus('submitting')
+    setMessage('')
     try {
       const res = await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          email,
+          email: normalized,
           source,
           lang,
           ts: new Date().toISOString(),
         }),
       })
-      if (res.ok) {
+      if (!res.ok) {
+        if (res.status === 400) {
+          setStatus('invalid')
+          setMessage('Invalid email')
+          return
+        }
+        throw new Error('Request failed')
+      }
+
+      const data = (await res.json()) as { ok: boolean; alreadyJoined?: boolean }
+      if (data.alreadyJoined) {
+        setStatus('already')
+        setMessage('Already joined')
+      } else {
         setStatus('success')
+        setMessage('')
         setEmail('')
         onSuccess?.()
-      } else {
-        setStatus('error')
-        onError?.()
       }
-    } catch {
+    } catch (err) {
+      console.error(err)
       setStatus('error')
+      setMessage('Something went wrong')
       onError?.()
     }
   }
@@ -119,7 +136,15 @@ export function WaitlistForm({
 
         <div aria-live="polite" className="min-h-[1.25rem] text-xs font-semibold">
           {status === 'success' && <span className="text-emerald-600">{t('waitlist.success')}</span>}
+          {status === 'already' && <span className="text-amber-600">{t('waitlist.success')}</span>}
+          {status === 'invalid' && <span className="text-rose-600">{t('waitlist.emailPlaceholder')}</span>}
           {status === 'error' && <span className="text-rose-600">{t('waitlist.sendFailed')}</span>}
+          {message && status !== 'success' && status !== 'invalid' && status !== 'error' && status !== 'already' && (
+            <span className="text-slate-600">{message}</span>
+          )}
+          {status === 'invalid' && message && <span className="text-rose-600">{message}</span>}
+          {status === 'error' && message && <span className="text-rose-600">{message}</span>}
+          {status === 'already' && message && <span className="text-amber-600">{message}</span>}
         </div>
       </form>
     </div>

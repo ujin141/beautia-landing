@@ -1,9 +1,8 @@
-import { useEffect, useMemo, useRef, useState, useCallback } from 'react'
+import { useEffect, useMemo, useRef, useState, useCallback, lazy, Suspense } from 'react'
 import { motion, useReducedMotion, type Variants } from 'framer-motion'
 import clsx from 'clsx'
 import { useI18n } from './i18n/i18n'
 import { DotNav } from './components/DotNav'
-import { IPhoneMock } from './components/IPhoneMock'
 import { CountdownTicker } from './components/Countdown'
 import { Magnetic } from './components/Magnetic'
 import { Reveal } from './components/Reveal'
@@ -13,8 +12,10 @@ import { LAUNCH_AT, formatLaunchInfo } from './config/launch'
 import { ThankYouModal } from './components/ThankYouModal'
 import { DemoCalendar } from './components/DemoCalendar'
 import { PriceCard } from './components/PriceCard'
-import { IntroOverlay } from './components/IntroOverlay'
 import appIcon from './assets/app_icon_square.png'
+
+const IPhoneMock = lazy(() => import('./components/IPhoneMock').then((m) => ({ default: m.IPhoneMock })))
+const IntroOverlay = lazy(() => import('./components/IntroOverlay').then((m) => ({ default: m.IntroOverlay })))
 
 function App() {
   const { t, ta, lang } = useI18n()
@@ -22,7 +23,6 @@ function App() {
   const [activeId, setActiveId] = useState('hero')
   const [thankOpen, setThankOpen] = useState(false)
   const [introOpen, setIntroOpen] = useState(true)
-  const [snapEnabled, setSnapEnabled] = useState(false)
   const prefersReduceMotion = useReducedMotion()
   const reduceMotion = !!prefersReduceMotion
 
@@ -60,9 +60,7 @@ function App() {
 
   const handleIntroDone = useCallback(() => {
     setIntroOpen(false)
-    setSnapEnabled(false)
     forceTop()
-    setTimeout(() => setSnapEnabled(true), 300)
   }, [forceTop])
 
   const items = useMemo(
@@ -118,6 +116,10 @@ function App() {
 
   const EASE_STD: [number, number, number, number] = [0.22, 1, 0.36, 1]
   const EASE_CARDS: [number, number, number, number] = [0.33, 1, 0.68, 1]
+  const sectionVisibility = useMemo(
+    () => ({ contentVisibility: 'auto', containIntrinsicSize: '1200px' } as const),
+    []
+  )
   const sectionVariants: Variants = reduceMotion
     ? { hidden: { opacity: 1, y: 0 }, show: { opacity: 1, y: 0 } }
     : { hidden: { opacity: 0, y: 32 }, show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: EASE_STD } } }
@@ -128,16 +130,19 @@ function App() {
   return (
     <div
       ref={containerRef}
-      className={clsx(
-        'no-scrollbar min-h-[100dvh] w-full overflow-x-hidden scroll-smooth',
-        snapEnabled ? 'snap-y snap-mandatory' : 'snap-none'
-      )}
+      className="no-scrollbar h-screen w-full overflow-y-scroll overflow-x-hidden scroll-smooth snap-y snap-mandatory"
     >
-      <IntroOverlay open={introOpen} onDone={handleIntroDone} reduceMotion={reduceMotion} />
+      <Suspense fallback={null}>
+        <IntroOverlay open={introOpen} onDone={handleIntroDone} reduceMotion={reduceMotion} />
+      </Suspense>
       <DotNav items={items} activeId={activeId} onSelect={scrollTo} />
 
       {/* Section 1: Hero */}
-      <section id="hero" className="relative flex min-h-[90vh] snap-start items-center">
+      <section
+        id="hero"
+        className="relative flex min-h-[90vh] snap-start items-center"
+        style={sectionVisibility}
+      >
         <motion.div
           className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6 sm:py-12"
           initial="hidden"
@@ -233,7 +238,11 @@ function App() {
             <div className="relative w-full max-w-xl lg:max-w-[460px] lg:justify-self-end z-0 mt-6 lg:mt-0">
               <div className="relative">
                 <div className="absolute -left-6 -top-6 hidden h-16 w-16 rounded-2xl bg-[linear-gradient(135deg,rgba(249,180,201,0.35),rgba(182,230,216,0.3),rgba(185,183,245,0.35))] blur-2xl lg:block" />
-                <IPhoneMock className="animate-float-soft max-w-[320px] sm:max-w-[360px] lg:max-w-none mx-auto" />
+                <Suspense
+                  fallback={<div className="h-[420px] w-full max-w-[360px] lg:max-w-[420px]" aria-hidden />}
+                >
+                  <IPhoneMock className="animate-float-soft max-w-[320px] sm:max-w-[360px] lg:max-w-none mx-auto" />
+                </Suspense>
               </div>
               <Magnetic className="mt-6" strength={10}>
                 <div className="relative overflow-hidden rounded-2xl border border-black/5 bg-white/75 p-5 shadow-[0_28px_80px_-50px_rgba(17,24,39,0.55)] backdrop-blur">
@@ -265,7 +274,11 @@ function App() {
       </section>
 
       {/* Split Pre-registration: Traveler / Partner */}
-      <section id="pre" className="relative flex min-h-[50vh] snap-start items-center">
+      <section
+        id="pre"
+        className="relative flex min-h-[50vh] snap-start items-center"
+        style={sectionVisibility}
+      >
         <motion.div
           className="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6 sm:py-12"
           initial="hidden"
@@ -316,7 +329,11 @@ function App() {
       </section>
 
       {/* Section 1.5: Two Layout Previews */}
-      <section id="layouts" className="relative flex snap-start items-center py-4 sm:py-8">
+      <section
+        id="layouts"
+        className="relative flex snap-start items-center py-4 sm:py-8"
+        style={sectionVisibility}
+      >
         <motion.div
           className="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6 sm:py-12"
           initial="hidden"
@@ -373,7 +390,11 @@ function App() {
       </section>
 
       {/* Section 2: Trust & Verified */}
-      <section id="trust" className="relative flex min-h-[90vh] snap-start items-center">
+      <section
+        id="trust"
+        className="relative flex min-h-[90vh] snap-start items-center"
+        style={sectionVisibility}
+      >
         <motion.div
           className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6 sm:py-12"
           initial="hidden"
@@ -420,7 +441,11 @@ function App() {
       </section>
 
       {/* Section 3: Seamless Experience */}
-      <section id="experience" className="relative flex min-h-[90vh] snap-start items-center overflow-hidden">
+      <section
+        id="experience"
+        className="relative flex min-h-[90vh] snap-start items-center overflow-hidden"
+        style={sectionVisibility}
+      >
         <motion.div
           className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6 sm:py-12"
           initial="hidden"
@@ -474,7 +499,11 @@ function App() {
       </section>
 
       {/* Section 4: Partner */}
-      <section id="partner" className="relative flex min-h-[90vh] snap-start items-center">
+      <section
+        id="partner"
+        className="relative flex min-h-[90vh] snap-start items-center"
+        style={sectionVisibility}
+      >
         <motion.div
           className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6 sm:py-12"
           initial="hidden"
@@ -554,7 +583,11 @@ function App() {
       </section>
 
       {/* FAQ */}
-      <section id="faq" className="relative flex min-h-[40vh] snap-start items-center">
+      <section
+        id="faq"
+        className="relative flex min-h-[40vh] snap-start items-center"
+        style={sectionVisibility}
+      >
         <motion.div
           className="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6 sm:py-12"
           initial="hidden"
