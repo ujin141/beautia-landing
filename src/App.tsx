@@ -683,6 +683,7 @@ function ZigZag({
         <motion.div
           className={clsx(
             'aspect-[16/10] w-full max-w-full overflow-hidden rounded-2xl border border-black/5 bg-gradient-to-br shadow-[0_24px_70px_-60px_rgba(17,24,39,0.55)]',
+            'mx-auto max-w-[520px] sm:max-w-[620px]',
             toneBg
           )}
           initial="hidden"
@@ -693,7 +694,7 @@ function ZigZag({
           <div className="relative h-full w-full">
             <div className="absolute inset-0 opacity-35 blur-[80px] bg-[radial-gradient(50%_60%_at_40%_30%,rgba(255,255,255,0.9),transparent)]" />
             <div className="relative h-full w-full p-4 sm:p-5">
-              <div className="flex gap-2 sm:gap-3">
+              <div className="flex gap-2 sm:gap-3 justify-center">
                 <motion.div
                   className="flex-1 space-y-2"
                   initial={reduceMotion ? undefined : { y: 12, opacity: 0 }}
