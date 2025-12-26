@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import appIcon from '../assets/app_icon_square.png'
 import { LAUNCH_AT } from '../config/launch'
@@ -8,15 +8,37 @@ type Props = { open: boolean; onDone: () => void; reduceMotion?: boolean }
 const sloganWords = ['Glow', 'Up', 'Anywhere', 'in', 'Asia']
 
 export function IntroOverlay({ open, onDone, reduceMotion }: Props) {
+  const [minElapsed, setMinElapsed] = useState(false)
+  const [loaded, setLoaded] = useState(false)
+
   useEffect(() => {
     if (!open) return
     if (reduceMotion) {
       onDone()
       return
     }
-    const id = window.setTimeout(() => onDone(), 1800)
-    return () => window.clearTimeout(id)
-  }, [open, onDone, reduceMotion])
+    setMinElapsed(false)
+    const timer = window.setTimeout(() => setMinElapsed(true), 1200)
+    return () => window.clearTimeout(timer)
+  }, [open, reduceMotion])
+
+  useEffect(() => {
+    if (!open || reduceMotion) return
+    const markLoaded = () => setLoaded(true)
+    if (document.readyState === 'complete') {
+      markLoaded()
+    } else {
+      window.addEventListener('load', markLoaded, { once: true })
+    }
+    return () => window.removeEventListener('load', markLoaded)
+  }, [open, reduceMotion])
+
+  useEffect(() => {
+    if (!open || reduceMotion) return
+    const fallback = window.setTimeout(() => onDone(), 2500)
+    if (minElapsed && loaded) onDone()
+    return () => window.clearTimeout(fallback)
+  }, [open, reduceMotion, minElapsed, loaded, onDone])
 
   if (reduceMotion && open) return null
 
@@ -34,7 +56,7 @@ export function IntroOverlay({ open, onDone, reduceMotion }: Props) {
         <motion.div
           className="pointer-events-none fixed inset-0 z-[80] overflow-hidden bg-white/40 backdrop-blur-[2px]"
           initial={{ opacity: 1 }}
-          animate={{ opacity: 0, transition: { delay: 1.0, duration: 0.6, ease: 'easeInOut' } }}
+          animate={{ opacity: 0, transition: { delay: 0.4, duration: 0.4, ease: 'easeInOut' } }}
           exit={{ opacity: 0, transition: { duration: 0.4 } }}
           onAnimationComplete={() => onDone()}
         >
