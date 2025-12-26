@@ -18,7 +18,7 @@ export function IntroOverlay({ open, onDone, reduceMotion }: Props) {
       return
     }
     setMinElapsed(false)
-    const timer = window.setTimeout(() => setMinElapsed(true), 1200)
+    const timer = window.setTimeout(() => setMinElapsed(true), 1800)
     return () => window.clearTimeout(timer)
   }, [open, reduceMotion])
 
@@ -35,7 +35,7 @@ export function IntroOverlay({ open, onDone, reduceMotion }: Props) {
 
   useEffect(() => {
     if (!open || reduceMotion) return
-    const fallback = window.setTimeout(() => onDone(), 2500)
+    const fallback = window.setTimeout(() => onDone(), 3200)
     if (minElapsed && loaded) onDone()
     return () => window.clearTimeout(fallback)
   }, [open, reduceMotion, minElapsed, loaded, onDone])
