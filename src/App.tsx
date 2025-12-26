@@ -651,6 +651,7 @@ function ZigZag({
       className={clsx(
         'grid gap-5 rounded-2xl border border-black/5 bg-white/70 p-6 shadow-quiet-md backdrop-blur md:grid-cols-2 md:items-center',
         'w-full max-w-full overflow-hidden',
+        'mx-auto max-w-[520px] lg:max-w-none',
         flip && 'md:[&>*:first-child]:order-2'
       )}
     >
@@ -678,7 +679,7 @@ function ZigZag({
           </motion.div>
         ) : null}
       </div>
-      <div className="relative w-full max-w-full">
+      <div className="relative w-full max-w-full lg:max-w-none mx-auto">
         <motion.div
           className={clsx(
             'aspect-[16/10] w-full max-w-full overflow-hidden rounded-2xl border border-black/5 bg-gradient-to-br shadow-[0_24px_70px_-60px_rgba(17,24,39,0.55)]',
