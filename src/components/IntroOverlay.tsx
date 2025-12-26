@@ -32,7 +32,7 @@ export function IntroOverlay({ open, onDone, reduceMotion }: Props) {
     <AnimatePresence>
       {open && (
         <motion.div
-          className="pointer-events-none fixed inset-0 z-[80] overflow-hidden bg-[radial-gradient(circle_at_30%_30%,rgba(249,180,201,0.28),transparent_45%),radial-gradient(circle_at_70%_30%,rgba(182,230,216,0.28),transparent_45%),radial-gradient(circle_at_60%_70%,rgba(185,183,245,0.32),transparent_55%),#ffffff]"
+          className="pointer-events-none fixed inset-0 z-[80] overflow-hidden bg-[radial-gradient(circle_at_30%_30%,rgba(249,180,201,0.28),transparent_55%),radial-gradient(circle_at_70%_30%,rgba(182,230,216,0.28),transparent_55%),radial-gradient(circle_at_60%_70%,rgba(185,183,245,0.32),transparent_60%),#ffffff]"
           initial={{ opacity: 1 }}
           animate={{ opacity: 0, transition: { delay: 1.9, duration: 0.6, ease: 'easeInOut' } }}
           exit={{ opacity: 0, transition: { duration: 0.4 } }}
@@ -47,11 +47,11 @@ export function IntroOverlay({ open, onDone, reduceMotion }: Props) {
                 : { duration: 6, repeat: Infinity, ease: 'easeInOut' }
             }
           />
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="relative flex flex-col items-center gap-3 overflow-hidden rounded-[28px] border border-black/10 bg-white/82 px-8 py-6 shadow-[0_32px_90px_-55px_rgba(17,24,39,0.5)] backdrop-blur">
-              <div className="absolute -inset-6 rounded-[36px] opacity-25 blur-[60px] bg-[radial-gradient(circle_at_30%_30%,#F9B4C9,transparent_55%),radial-gradient(circle_at_70%_30%,#B6E6D8,transparent_55%),radial-gradient(circle_at_60%_70%,#B9B7F5,transparent_65%)]" />
+          <div className="absolute inset-0 flex items-center justify-center px-4">
+            <div className="relative flex w-full max-w-[420px] flex-col items-center gap-3 overflow-hidden rounded-[24px] border border-black/10 bg-white/85 px-6 py-5 shadow-[0_32px_90px_-55px_rgba(17,24,39,0.5)] backdrop-blur sm:max-w-[480px] sm:rounded-[28px] sm:px-8 sm:py-6">
+              <div className="absolute -inset-5 sm:-inset-6 rounded-[32px] opacity-25 blur-[50px] sm:blur-[60px] bg-[radial-gradient(circle_at_30%_30%,#F9B4C9,transparent_55%),radial-gradient(circle_at_70%_30%,#B6E6D8,transparent_55%),radial-gradient(circle_at_60%_70%,#B9B7F5,transparent_65%)]" />
               <motion.div
-                className="relative flex h-20 w-20 items-center justify-center rounded-full border border-white/60 bg-white/90 shadow-[0_18px_46px_-34px_rgba(0,0,0,0.35)]"
+                className="relative flex h-16 w-16 items-center justify-center rounded-full border border-white/60 bg-white/90 shadow-[0_18px_46px_-34px_rgba(0,0,0,0.35)] sm:h-20 sm:w-20"
                 initial={{ scale: 0.9, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ duration: 0.8, ease: [0.33, 1, 0.68, 1], delay: 0.1 }}
@@ -59,7 +59,7 @@ export function IntroOverlay({ open, onDone, reduceMotion }: Props) {
                 <img
                   src={appIcon}
                   alt="BEAUTIA logo"
-                  className="h-14 w-14 rounded-2xl border border-black/5 shadow-[0_18px_42px_-30px_rgba(0,0,0,0.35)]"
+                  className="h-12 w-12 rounded-2xl border border-black/5 shadow-[0_18px_42px_-30px_rgba(0,0,0,0.35)] sm:h-14 sm:w-14"
                 />
                 <motion.div
                   className="absolute inset-0 rounded-full border border-[rgba(0,0,0,0.05)]"
