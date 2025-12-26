@@ -79,6 +79,9 @@ export function WaitlistForm({
         setMessage('')
         setEmail('')
         onSuccess?.()
+        if (typeof window !== 'undefined') {
+          window.alert(t('waitlist.success'))
+        }
       }
     } catch (err) {
       console.error(err)
