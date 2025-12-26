@@ -27,7 +27,7 @@ function App() {
 
   useEffect(() => {
     if (!introOpen) return
-    const id = window.setTimeout(() => setIntroOpen(false), 1200)
+    const id = window.setTimeout(() => setIntroOpen(false), 2600)
     return () => window.clearTimeout(id)
   }, [introOpen])
 
@@ -117,7 +117,10 @@ function App() {
     : { hidden: { opacity: 0, y: 16 }, show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: EASE_CARDS } } }
 
   return (
-    <div ref={containerRef} className="no-scrollbar h-screen w-full overflow-y-auto snap-y snap-mandatory">
+    <div
+      ref={containerRef}
+      className="no-scrollbar h-[100dvh] w-full snap-y snap-mandatory overflow-y-auto overflow-x-hidden scroll-smooth"
+    >
       <IntroOverlay open={introOpen} onDone={() => setIntroOpen(false)} reduceMotion={reduceMotion} />
       <DotNav items={items} activeId={activeId} onSelect={scrollTo} />
 

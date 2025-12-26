@@ -18,7 +18,7 @@ export function IntroOverlay({ open, onDone, reduceMotion }: Props) {
       return
     }
     setMinElapsed(false)
-    const timer = window.setTimeout(() => setMinElapsed(true), 1800)
+    const timer = window.setTimeout(() => setMinElapsed(true), 2600)
     return () => window.clearTimeout(timer)
   }, [open, reduceMotion])
 
@@ -35,7 +35,7 @@ export function IntroOverlay({ open, onDone, reduceMotion }: Props) {
 
   useEffect(() => {
     if (!open || reduceMotion) return
-    const fallback = window.setTimeout(() => onDone(), 3200)
+    const fallback = window.setTimeout(() => onDone(), 4500)
     if (minElapsed && loaded) onDone()
     return () => window.clearTimeout(fallback)
   }, [open, reduceMotion, minElapsed, loaded, onDone])
@@ -54,9 +54,9 @@ export function IntroOverlay({ open, onDone, reduceMotion }: Props) {
     <AnimatePresence>
       {open && (
         <motion.div
-          className="pointer-events-none fixed inset-0 z-[80] overflow-hidden bg-white/40 backdrop-blur-[2px]"
+          className="pointer-events-none fixed inset-0 z-[80] overflow-hidden bg-white/25 backdrop-blur-[2px]"
           initial={{ opacity: 1 }}
-          animate={{ opacity: 0, transition: { delay: 0.4, duration: 0.4, ease: 'easeInOut' } }}
+          animate={{ opacity: 0, transition: { delay: 1.0, duration: 0.6, ease: 'easeInOut' } }}
           exit={{ opacity: 0, transition: { duration: 0.4 } }}
           onAnimationComplete={() => onDone()}
         >

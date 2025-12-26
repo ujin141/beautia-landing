@@ -14,12 +14,34 @@ body {
   height: 100%;
 }
 
+html {
+  scroll-snap-type: y mandatory;
+  height: 100%;
+}
+
 body {
+  height: 100%;
+  overflow: hidden;
   margin: 0;
   font-family: Manrope, ui-sans-serif, system-ui, Segoe UI, Apple SD Gothic Neo, Noto Sans KR, sans-serif;
   font-weight: 500;
   background: linear-gradient(165deg, #ffffff 0%, #fdf6f8 30%, #f4faf7 65%, #f5f4fb 100%);
   color: rgb(15 23 42);
+  scroll-snap-type: y mandatory;
+  overscroll-behavior-y: contain;
+}
+
+.snap-start {
+  scroll-snap-stop: always;
+}
+
+#root {
+  height: 100%;
+  overflow: hidden;
+}
+
+.snap-start {
+  scroll-snap-stop: always;
 }
 
 /* 아주 은은한 Moving Aurora Glow (8% 투명도) */
