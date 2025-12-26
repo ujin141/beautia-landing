@@ -320,13 +320,13 @@ function App() {
               <div className="mt-4 flex items-center gap-2 text-[11px] font-semibold text-slate-600">
                 <span className="h-2 w-2 rounded-full bg-[linear-gradient(90deg,#F9B4C9,#B6E6D8,#B9B7F5)]" />
                 {t('partner.points.intentTitle')}
-              </div>
+      </div>
               <button
                 onClick={() => scrollTo('partner')}
                 className="mt-5 inline-flex items-center gap-2 rounded-xl bg-slate-900 px-4 py-2 text-xs font-extrabold text-white shadow-quiet-md hover:bg-slate-800"
               >
                 {t('partner.cta')}
-              </button>
+        </button>
             </motion.div>
           </div>
         </motion.div>
@@ -352,8 +352,8 @@ function App() {
               </h2>
               <p className="mt-4 text-base font-medium leading-relaxed text-slate-600 sm:text-lg">
                 <Reveal delay={0.06}>{t('trust.body')}</Reveal>
-              </p>
-            </div>
+        </p>
+      </div>
 
           <motion.div
             className="mt-8 sm:mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4"
@@ -692,8 +692,8 @@ function ZigZag({
         >
           <div className="relative h-full w-full">
             <div className="absolute inset-0 opacity-35 blur-[80px] bg-[radial-gradient(50%_60%_at_40%_30%,rgba(255,255,255,0.9),transparent)]" />
-            <div className="relative h-full w-full p-5">
-              <div className="flex gap-3">
+            <div className="relative h-full w-full p-4 sm:p-5">
+              <div className="flex gap-2 sm:gap-3">
                 <motion.div
                   className="flex-1 space-y-2"
                   initial={reduceMotion ? undefined : { y: 12, opacity: 0 }}
