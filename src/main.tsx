@@ -4,6 +4,10 @@ import './index.css'
 import App from './App.tsx'
 import { I18nProvider } from './i18n/i18n.tsx'
 
+if (typeof window !== 'undefined' && window.location.search.includes('debug=1')) {
+  void import('eruda').then(({ default: eruda }) => eruda.init())
+}
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <I18nProvider>
