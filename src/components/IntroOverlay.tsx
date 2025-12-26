@@ -32,9 +32,9 @@ export function IntroOverlay({ open, onDone, reduceMotion }: Props) {
     <AnimatePresence>
       {open && (
         <motion.div
-          className="pointer-events-none fixed inset-0 z-[80] overflow-hidden bg-[radial-gradient(circle_at_30%_30%,rgba(249,180,201,0.28),transparent_55%),radial-gradient(circle_at_70%_30%,rgba(182,230,216,0.28),transparent_55%),radial-gradient(circle_at_60%_70%,rgba(185,183,245,0.32),transparent_60%),#ffffff]"
+          className="pointer-events-none fixed inset-0 z-[80] overflow-hidden bg-white/40 backdrop-blur-[2px]"
           initial={{ opacity: 1 }}
-          animate={{ opacity: 0, transition: { delay: 1.9, duration: 0.6, ease: 'easeInOut' } }}
+          animate={{ opacity: 0, transition: { delay: 1.0, duration: 0.6, ease: 'easeInOut' } }}
           exit={{ opacity: 0, transition: { duration: 0.4 } }}
           onAnimationComplete={() => onDone()}
         >
