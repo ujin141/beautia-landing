@@ -27,7 +27,8 @@ function App() {
 
   useEffect(() => {
     if (!introOpen) return
-    const id = window.setTimeout(() => setIntroOpen(false), 2600)
+    // Safeguard only; IntroOverlay will call onDone earlier when ready
+    const id = window.setTimeout(() => setIntroOpen(false), 6500)
     return () => window.clearTimeout(id)
   }, [introOpen])
 
@@ -53,6 +54,11 @@ function App() {
 
   // On first mount, ensure scroll is at top (prevents cached scroll on mobile)
   useEffect(() => {
+    forceTop()
+  }, [forceTop])
+
+  const handleIntroDone = useCallback(() => {
+    setIntroOpen(false)
     forceTop()
   }, [forceTop])
 
@@ -121,7 +127,7 @@ function App() {
       ref={containerRef}
       className="no-scrollbar min-h-[100dvh] w-full snap-y snap-mandatory overflow-x-hidden scroll-smooth"
     >
-      <IntroOverlay open={introOpen} onDone={() => setIntroOpen(false)} reduceMotion={reduceMotion} />
+      <IntroOverlay open={introOpen} onDone={handleIntroDone} reduceMotion={reduceMotion} />
       <DotNav items={items} activeId={activeId} onSelect={scrollTo} />
 
       {/* Section 1: Hero */}

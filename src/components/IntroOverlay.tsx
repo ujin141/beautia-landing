@@ -18,7 +18,7 @@ export function IntroOverlay({ open, onDone, reduceMotion }: Props) {
       return
     }
     setMinElapsed(false)
-    const timer = window.setTimeout(() => setMinElapsed(true), 2600)
+    const timer = window.setTimeout(() => setMinElapsed(true), 3800)
     return () => window.clearTimeout(timer)
   }, [open, reduceMotion])
 
@@ -35,7 +35,7 @@ export function IntroOverlay({ open, onDone, reduceMotion }: Props) {
 
   useEffect(() => {
     if (!open || reduceMotion) return
-    const fallback = window.setTimeout(() => onDone(), 4500)
+    const fallback = window.setTimeout(() => onDone(), 6000)
     if (minElapsed && loaded) onDone()
     return () => window.clearTimeout(fallback)
   }, [open, reduceMotion, minElapsed, loaded, onDone])
@@ -56,9 +56,8 @@ export function IntroOverlay({ open, onDone, reduceMotion }: Props) {
         <motion.div
           className="pointer-events-none fixed inset-0 z-[80] overflow-hidden bg-white/25 backdrop-blur-[2px]"
           initial={{ opacity: 1 }}
-          animate={{ opacity: 0, transition: { delay: 1.0, duration: 0.6, ease: 'easeInOut' } }}
+          animate={{ opacity: 0, transition: { delay: 1.6, duration: 0.6, ease: 'easeInOut' } }}
           exit={{ opacity: 0, transition: { duration: 0.4 } }}
-          onAnimationComplete={() => onDone()}
         >
           <motion.div
             className="absolute inset-0 opacity-25 blur-3xl bg-[radial-gradient(40%_35%_at_20%_25%,#F9B4C9,transparent),radial-gradient(40%_35%_at_75%_30%,#B6E6D8,transparent),radial-gradient(40%_35%_at_55%_75%,#B9B7F5,transparent)]"
