@@ -22,8 +22,23 @@ function pick(tree: MessageTree, path: string): unknown {
 }
 
 function getInitialLang(): Lang {
-  const saved = localStorage.getItem('beautia.lang')
-  if (saved === 'ko' || saved === 'en' || saved === 'ja' || saved === 'zh' || saved === 'th') return saved
+  const supported: Lang[] = ['ko', 'en', 'ja', 'zh', 'th']
+
+  try {
+    const saved = localStorage.getItem('beautia.lang')
+    if (supported.includes(saved as Lang)) return saved as Lang
+  } catch {
+    /* ignore */
+  }
+
+  if (typeof navigator !== 'undefined') {
+    const raw = navigator.language || (navigator.languages && navigator.languages[0])
+    if (raw) {
+      const base = raw.toLowerCase().split('-')[0]
+      if (supported.includes(base as Lang)) return base as Lang
+    }
+  }
+
   return 'en'
 }
 

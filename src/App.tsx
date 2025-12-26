@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { motion, useReducedMotion } from 'framer-motion'
+import { motion, useReducedMotion, type Variants } from 'framer-motion'
 import clsx from 'clsx'
 import { useI18n } from './i18n/i18n'
 import { DotNav } from './components/DotNav'
@@ -23,6 +23,7 @@ function App() {
   const [thankOpen, setThankOpen] = useState(false)
   const [introOpen, setIntroOpen] = useState(true)
   const prefersReduceMotion = useReducedMotion()
+  const reduceMotion = !!prefersReduceMotion
 
   useEffect(() => {
     if (!introOpen) return
@@ -81,16 +82,18 @@ function App() {
     [ta]
   )
 
-  const sectionVariants = prefersReduceMotion
+  const EASE_STD: [number, number, number, number] = [0.22, 1, 0.36, 1]
+  const EASE_CARDS: [number, number, number, number] = [0.33, 1, 0.68, 1]
+  const sectionVariants: Variants = reduceMotion
     ? { hidden: { opacity: 1, y: 0 }, show: { opacity: 1, y: 0 } }
-    : { hidden: { opacity: 0, y: 32 }, show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } } }
-  const trustCardVariants = prefersReduceMotion
+    : { hidden: { opacity: 0, y: 32 }, show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: EASE_STD } } }
+  const trustCardVariants: Variants = reduceMotion
     ? { hidden: { opacity: 1, y: 0 }, show: { opacity: 1, y: 0 } }
-    : { hidden: { opacity: 0, y: 16 }, show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.33, 1, 0.68, 1] } } }
+    : { hidden: { opacity: 0, y: 16 }, show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: EASE_CARDS } } }
 
   return (
     <div ref={containerRef} className="no-scrollbar h-screen w-full overflow-y-auto snap-y snap-mandatory">
-      <IntroOverlay open={introOpen} onDone={() => setIntroOpen(false)} reduceMotion={prefersReduceMotion} />
+      <IntroOverlay open={introOpen} onDone={() => setIntroOpen(false)} reduceMotion={reduceMotion} />
       <DotNav items={items} activeId={activeId} onSelect={scrollTo} />
 
       {/* Section 1: Hero */}
@@ -284,7 +287,7 @@ function App() {
           <div className="grid gap-4 md:grid-cols-2">
             <motion.div
               className="rounded-2xl border border-black/5 bg-[linear-gradient(135deg,rgba(249,180,201,0.12),rgba(182,230,216,0.12),rgba(185,183,245,0.12))] p-6 shadow-[0_24px_65px_-48px_rgba(17,24,39,0.5)] backdrop-blur"
-              whileHover={prefersReduceMotion ? undefined : { y: -4, scale: 1.01 }}
+              whileHover={reduceMotion ? undefined : { y: -4, scale: 1.01 }}
               transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
             >
               <div className="text-xs font-semibold text-slate-600">{t('hero.labelOverview')}</div>
@@ -306,7 +309,7 @@ function App() {
 
             <motion.div
               className="rounded-2xl border border-black/5 bg-[linear-gradient(135deg,rgba(185,183,245,0.12),rgba(182,230,216,0.12),rgba(249,180,201,0.12))] p-6 shadow-[0_24px_65px_-48px_rgba(17,24,39,0.5)] backdrop-blur"
-              whileHover={prefersReduceMotion ? undefined : { y: -4, scale: 1.01 }}
+              whileHover={reduceMotion ? undefined : { y: -4, scale: 1.01 }}
               transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
             >
               <div className="text-xs font-semibold text-slate-600">{t('partner.label')}</div>
@@ -357,19 +360,19 @@ function App() {
             initial="hidden"
             whileInView="show"
             viewport={{ once: true, amount: 0.2 }}
-            transition={{ staggerChildren: prefersReduceMotion ? 0 : 0.08 }}
+            transition={{ staggerChildren: reduceMotion ? 0 : 0.08 }}
           >
             <motion.div variants={trustCardVariants}>
-              <TrustBadge reduceMotion={prefersReduceMotion} title={t('trust.badges.verified')} desc={t('trust.badgeCopy.verified')} />
+            <TrustBadge reduceMotion={reduceMotion} title={t('trust.badges.verified')} desc={t('trust.badgeCopy.verified')} />
             </motion.div>
             <motion.div variants={trustCardVariants}>
-              <TrustBadge reduceMotion={prefersReduceMotion} title={t('trust.badges.pricing')} desc={t('trust.badgeCopy.pricing')} />
+            <TrustBadge reduceMotion={reduceMotion} title={t('trust.badges.pricing')} desc={t('trust.badgeCopy.pricing')} />
             </motion.div>
             <motion.div variants={trustCardVariants}>
-              <TrustBadge reduceMotion={prefersReduceMotion} title={t('trust.badges.reviews')} desc={t('trust.badgeCopy.reviews')} />
+            <TrustBadge reduceMotion={reduceMotion} title={t('trust.badges.reviews')} desc={t('trust.badgeCopy.reviews')} />
             </motion.div>
             <motion.div variants={trustCardVariants}>
-              <TrustBadge reduceMotion={prefersReduceMotion} title={t('trust.badges.support')} desc={t('trust.badgeCopy.support')} />
+            <TrustBadge reduceMotion={reduceMotion} title={t('trust.badges.support')} desc={t('trust.badgeCopy.support')} />
             </motion.div>
           </motion.div>
           </div>
@@ -407,7 +410,7 @@ function App() {
               body={t('experience.cards.verified.body')}
               points={ta('experience.cards.verified.points')}
               tone="pink"
-              reduceMotion={prefersReduceMotion}
+              reduceMotion={reduceMotion}
             />
             <ZigZag
               flip
@@ -415,7 +418,7 @@ function App() {
               body={t('experience.cards.transparent.body')}
               points={ta('experience.cards.transparent.points')}
               tone="mint"
-              reduceMotion={prefersReduceMotion}
+              reduceMotion={reduceMotion}
             />
             <ZigZag
               flip={false}
@@ -423,7 +426,7 @@ function App() {
               body={t('experience.cards.seamless.body')}
               points={ta('experience.cards.seamless.points')}
               tone="lavender"
-              reduceMotion={prefersReduceMotion}
+              reduceMotion={reduceMotion}
             />
           </div>
           </div>
@@ -531,9 +534,9 @@ function App() {
               <motion.div
                 key={idx}
                 className="rounded-2xl border border-black/5 bg-white/80 p-5 shadow-quiet-md backdrop-blur"
-                initial={prefersReduceMotion ? undefined : { y: 12, opacity: 0 }}
-                whileInView={prefersReduceMotion ? undefined : { y: 0, opacity: 1 }}
-                whileHover={prefersReduceMotion ? undefined : { y: -3, scale: 1.01 }}
+                initial={reduceMotion ? undefined : { y: 12, opacity: 0 }}
+                whileInView={reduceMotion ? undefined : { y: 0, opacity: 1 }}
+                whileHover={reduceMotion ? undefined : { y: -3, scale: 1.01 }}
                 viewport={{ once: true, amount: 0.25 }}
                 transition={{ duration: 0.45, ease: [0.33, 1, 0.68, 1], delay: idx * 0.05 }}
               >
@@ -635,9 +638,13 @@ function ZigZag({
       : tone === 'mint'
         ? 'from-[rgba(182,230,216,0.55)] via-white to-[rgba(182,230,216,0.25)]'
         : 'from-[rgba(185,183,245,0.55)] via-white to-[rgba(185,183,245,0.25)]'
-  const pointVariants = reduceMotion
+  const POINT_EASE: [number, number, number, number] = [0.33, 1, 0.68, 1]
+  const pointVariants: Variants = reduceMotion
     ? { hidden: { opacity: 1, y: 0 }, show: { opacity: 1, y: 0 } }
-    : { hidden: { opacity: 0, y: 8 }, show: { opacity: 1, y: 0, transition: { duration: 0.35, ease: [0.33, 1, 0.68, 1] } } }
+    : {
+        hidden: { opacity: 0, y: 8 },
+        show: { opacity: 1, y: 0, transition: { duration: 0.35, ease: POINT_EASE } },
+      }
 
   return (
     <div
