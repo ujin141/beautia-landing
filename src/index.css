@@ -1,0 +1,82 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Manrope, ui-sans-serif, system-ui, Segoe UI, Apple SD Gothic Neo, Noto Sans KR, sans-serif;
+  font-weight: 500;
+  background: linear-gradient(165deg, #ffffff 0%, #fdf6f8 30%, #f4faf7 65%, #f5f4fb 100%);
+  color: rgb(15 23 42);
+}
+
+/* 아주 은은한 Moving Aurora Glow (8% 투명도) */
+body::before {
+  content: '';
+  position: fixed;
+  inset: -20%;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.12;
+  filter: blur(80px) saturate(1.1);
+  background:
+    radial-gradient(50% 45% at 18% 25%, #f9b4c9 0%, transparent 60%),
+    radial-gradient(55% 50% at 70% 30%, #b6e6d8 0%, transparent 62%),
+    radial-gradient(55% 50% at 55% 75%, #b9b7f5 0%, transparent 62%);
+  animation: aurora-drift 14s ease-in-out infinite;
+}
+
+/* 얕은 라인 패턴으로 입체감 */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(90deg, rgba(15, 23, 42, 0.02) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(15, 23, 42, 0.02) 1px, transparent 1px);
+  background-size: 140px 140px, 140px 140px;
+  mix-blend-mode: soft-light;
+  opacity: 0.45;
+}
+
+@keyframes aurora-drift {
+  0% {
+    transform: translate3d(-6%, -4%, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(6%, 4%, 0) scale(1.05);
+  }
+  100% {
+    transform: translate3d(-6%, -4%, 0) scale(1);
+  }
+}
+
+/* 스크롤바 숨김(미관) */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* TH / ZH: 가독성 보정 */
+html[data-lang='th'],
+html[data-lang='zh'] {
+  line-height: 1.7;
+  letter-spacing: -0.01em;
+}
