@@ -22,6 +22,7 @@ function App() {
   const [activeId, setActiveId] = useState('hero')
   const [thankOpen, setThankOpen] = useState(false)
   const [introOpen, setIntroOpen] = useState(true)
+  const [snapEnabled, setSnapEnabled] = useState(false)
   const prefersReduceMotion = useReducedMotion()
   const reduceMotion = !!prefersReduceMotion
 
@@ -59,7 +60,9 @@ function App() {
 
   const handleIntroDone = useCallback(() => {
     setIntroOpen(false)
+    setSnapEnabled(false)
     forceTop()
+    setTimeout(() => setSnapEnabled(true), 300)
   }, [forceTop])
 
   const items = useMemo(
@@ -125,7 +128,10 @@ function App() {
   return (
     <div
       ref={containerRef}
-      className="no-scrollbar min-h-[100dvh] w-full snap-y snap-mandatory overflow-x-hidden scroll-smooth"
+      className={clsx(
+        'no-scrollbar min-h-[100dvh] w-full overflow-x-hidden scroll-smooth',
+        snapEnabled ? 'snap-y snap-mandatory' : 'snap-none'
+      )}
     >
       <IntroOverlay open={introOpen} onDone={handleIntroDone} reduceMotion={reduceMotion} />
       <DotNav items={items} activeId={activeId} onSelect={scrollTo} />
