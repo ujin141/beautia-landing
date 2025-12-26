@@ -683,7 +683,7 @@ function ZigZag({
         <motion.div
           className={clsx(
             'aspect-[4/3] sm:aspect-[16/10] w-full max-w-full overflow-hidden rounded-2xl border border-black/5 bg-gradient-to-br shadow-[0_24px_70px_-60px_rgba(17,24,39,0.55)]',
-            'mx-auto max-w-[90vw] sm:max-w-[620px]',
+            'mx-auto max-w-[88vw] sm:max-w-[620px]',
             toneBg
           )}
           initial="hidden"
@@ -694,7 +694,7 @@ function ZigZag({
           <div className="relative h-full w-full">
             <div className="absolute inset-0 opacity-35 blur-[80px] bg-[radial-gradient(50%_60%_at_40%_30%,rgba(255,255,255,0.9),transparent)]" />
             <div className="relative h-full w-full p-3 sm:p-5">
-              <div className="flex gap-2 sm:gap-3 justify-center items-start">
+              <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 justify-center items-stretch">
                 <motion.div
                   className="flex-1 space-y-2"
                   initial={reduceMotion ? undefined : { y: 12, opacity: 0 }}
@@ -736,7 +736,7 @@ function ZigZag({
                 </motion.div>
 
                 <motion.div
-                  className="w-36 space-y-2 rounded-2xl border border-white/60 bg-white/85 p-3 text-[11px] font-semibold text-slate-700 shadow-[0_16px_42px_-34px_rgba(0,0,0,0.45)]"
+                  className="w-full sm:w-36 space-y-2 rounded-2xl border border-white/60 bg-white/85 p-3 text-[11px] font-semibold text-slate-700 shadow-[0_16px_42px_-34px_rgba(0,0,0,0.45)]"
                   initial={reduceMotion ? undefined : { y: 16, opacity: 0 }}
                   whileInView={reduceMotion ? undefined : { y: 0, opacity: 1 }}
                   viewport={{ once: true, amount: 0.25 }}
