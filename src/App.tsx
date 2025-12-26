@@ -31,6 +31,14 @@ function App() {
     return () => window.clearTimeout(id)
   }, [introOpen])
 
+  // Ensure main view is visible immediately after intro closes (no extra scroll needed)
+  useEffect(() => {
+    if (introOpen) return
+    const root = containerRef.current
+    root?.scrollTo({ top: 0, behavior: 'auto' })
+    window.scrollTo({ top: 0, behavior: 'auto' })
+  }, [introOpen])
+
   const items = useMemo(
     () => [
       { id: 'hero', label: t('nav.hero') },
