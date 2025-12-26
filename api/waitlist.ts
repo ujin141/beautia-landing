@@ -1,8 +1,10 @@
-import { kv } from '@vercel/kv'
+import { Redis } from '@upstash/redis'
 
 export const config = {
   runtime: 'edge',
 }
+
+const redis = Redis.fromEnv()
 
 function normalizeEmail(input: unknown): string | null {
   if (typeof input !== 'string') return null
@@ -35,14 +37,14 @@ export default async function handler(req: Request): Promise<Response> {
   }
 
   try {
-    const added = await kv.sadd('waitlist:emails', email)
+    const added = await redis.sadd('waitlist:emails', email)
     if (added === 1) {
-      await kv.hset(`waitlist:meta:${email}`, { createdAt: Date.now() })
+      await redis.hset(`waitlist:meta:${email}`, { createdAt: Date.now() })
     }
-    return new Response(
-      JSON.stringify({ ok: true, alreadyJoined: added === 0 }),
-      { status: 200, headers: { 'Content-Type': 'application/json' } }
-    )
+    return new Response(JSON.stringify({ ok: true, alreadyJoined: added === 0 }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' },
+    })
   } catch (err) {
     console.error(err)
     return new Response(JSON.stringify({ ok: false, error: 'Server error' }), {
