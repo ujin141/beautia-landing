@@ -16,11 +16,11 @@ body {
 
 html {
   scroll-snap-type: y mandatory;
-  height: 100%;
+  min-height: 100%;
 }
 
 body {
-  height: 100%;
+  min-height: 100%;
   overflow: auto;
   margin: 0;
   font-family: Manrope, ui-sans-serif, system-ui, Segoe UI, Apple SD Gothic Neo, Noto Sans KR, sans-serif;
@@ -33,11 +33,6 @@ body {
 
 .snap-start {
   scroll-snap-stop: always;
-}
-
-#root {
-  height: 100%;
-  overflow: hidden;
 }
 
 .snap-start {

@@ -119,7 +119,7 @@ function App() {
   return (
     <div
       ref={containerRef}
-      className="no-scrollbar h-[100dvh] w-full snap-y snap-mandatory overflow-y-auto overflow-x-hidden scroll-smooth"
+      className="no-scrollbar min-h-[100dvh] w-full snap-y snap-mandatory overflow-x-hidden scroll-smooth"
     >
       <IntroOverlay open={introOpen} onDone={() => setIntroOpen(false)} reduceMotion={reduceMotion} />
       <DotNav items={items} activeId={activeId} onSelect={scrollTo} />
