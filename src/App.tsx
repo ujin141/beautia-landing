@@ -380,7 +380,7 @@ function App() {
       </section>
 
       {/* Section 3: Seamless Experience */}
-      <section id="experience" className="relative flex min-h-[90vh] snap-start items-center">
+      <section id="experience" className="relative flex min-h-[90vh] snap-start items-center overflow-hidden">
         <motion.div
           className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6 sm:py-12"
           initial="hidden"
@@ -650,6 +650,7 @@ function ZigZag({
     <div
       className={clsx(
         'grid gap-5 rounded-2xl border border-black/5 bg-white/70 p-6 shadow-quiet-md backdrop-blur md:grid-cols-2 md:items-center',
+        'w-full max-w-full overflow-hidden',
         flip && 'md:[&>*:first-child]:order-2'
       )}
     >
@@ -677,10 +678,10 @@ function ZigZag({
           </motion.div>
         ) : null}
       </div>
-      <div className="relative">
+      <div className="relative w-full max-w-full">
         <motion.div
           className={clsx(
-            'aspect-[16/10] overflow-hidden rounded-2xl border border-black/5 bg-gradient-to-br shadow-[0_24px_70px_-60px_rgba(17,24,39,0.55)]',
+            'aspect-[16/10] w-full max-w-full overflow-hidden rounded-2xl border border-black/5 bg-gradient-to-br shadow-[0_24px_70px_-60px_rgba(17,24,39,0.55)]',
             toneBg
           )}
           initial="hidden"
