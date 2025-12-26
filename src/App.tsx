@@ -27,7 +27,7 @@ function App() {
 
   useEffect(() => {
     if (!introOpen) return
-    const id = window.setTimeout(() => setIntroOpen(false), 3000)
+    const id = window.setTimeout(() => setIntroOpen(false), 1800)
     return () => window.clearTimeout(id)
   }, [introOpen])
 

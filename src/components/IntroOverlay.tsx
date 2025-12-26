@@ -14,7 +14,7 @@ export function IntroOverlay({ open, onDone, reduceMotion }: Props) {
       onDone()
       return
     }
-    const id = window.setTimeout(() => onDone(), 2500)
+    const id = window.setTimeout(() => onDone(), 1800)
     return () => window.clearTimeout(id)
   }, [open, onDone, reduceMotion])
 
