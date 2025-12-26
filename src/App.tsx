@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState, useCallback } from 'react'
 import { motion, useReducedMotion, type Variants } from 'framer-motion'
 import clsx from 'clsx'
 import { useI18n } from './i18n/i18n'
@@ -31,13 +31,30 @@ function App() {
     return () => window.clearTimeout(id)
   }, [introOpen])
 
+  const forceTop = useCallback(() => {
+    const root = containerRef.current
+    const doScroll = () => {
+      root?.scrollTo({ top: 0, behavior: 'auto' })
+      if (root) root.scrollTop = 0
+      window.scrollTo({ top: 0, behavior: 'auto' })
+      document.documentElement.scrollTop = 0
+      document.body.scrollTop = 0
+    }
+    doScroll()
+    requestAnimationFrame(doScroll)
+    setTimeout(doScroll, 50)
+  }, [])
+
   // Ensure main view is visible immediately after intro closes (no extra scroll needed)
   useEffect(() => {
     if (introOpen) return
-    const root = containerRef.current
-    root?.scrollTo({ top: 0, behavior: 'auto' })
-    window.scrollTo({ top: 0, behavior: 'auto' })
-  }, [introOpen])
+    forceTop()
+  }, [introOpen, forceTop])
+
+  // On first mount, ensure scroll is at top (prevents cached scroll on mobile)
+  useEffect(() => {
+    forceTop()
+  }, [forceTop])
 
   const items = useMemo(
     () => [
